@@ -47,6 +47,20 @@ for row in data[372:386]:
         trpNE1=getXYZfromRow(row)
 
 
+#gets the XYZ coordinates for relevant tryptophan atoms and writes them to a dictionary
+def getTrpCoordfromPDB(trpNumber):
+    #searches entire rows of file
+    for i in range(0,len(data)):
+        if data[i][3]=="TRP" and str(data[i][5])==str(trpNumber):
+            #checks to see if atom type is TRP as well as the trpNumber (for example 7)
+            for name in trpList:
+                #checks to see if the name of the atom is in the trpList
+                if data[i][2]==name:
+                    #writes XYZ coordinates to atomXYZ dictionary
+                    atomXYZ[name]=[float(data[i][6]),float(data[i][7]),float(data[i][8])]
+    #writes trpOrigin to atomXYZ dictionary
+    atomXYZ['trpOrigin']= numpy.add(atomXYZ["CD2"],atomXYZ["CE2"])/2
+
 #calculates the trpOrigin, needed for calculating the tryptophan coordinates
 #does this need to be global? may want to change to local if dealing with more tryptophans??
 trpOrigin = numpy.add(trpCD2,trpCE2)/2
