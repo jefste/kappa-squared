@@ -70,6 +70,8 @@ def dotProductAngle(vector1,vector2):
     denominator1=numpy.power(numpy.dot(vector1,vector1)*numpy.dot(vector2,vector2),0.5)
     return numpy.arccos(numerator1/denominator1)
 
+
+#estimates kappa squared without doing any calcuations, only uses coordinates of file
 def estimationOfKappaSquared():
     #shorten the function name to make code more readable
     dPA = dotProductAngle
@@ -84,4 +86,13 @@ def estimationOfKappaSquared():
     kappa_est_dis=kappaSquared(dPA(trpD_Est,hemeD_Dis_Est),dPA(trpD_Est,Trans_V),dPA(hemeD_Dis_Est,Trans_V))
     return kappa_est_normal,kappa_est_dis
     
-print 'normal: %.3f, disordered:, %.3f' % estimationOfKappaSquared()
+# used for debugging output of estimated k^2
+#print 'normal: %.3f, disordered:, %.3f' % estimationOfKappaSquared()
+
+#generates the coordinates for a heme dipole       
+def generateHemeDipoleParameter(x,angle,orientation):
+    if orientation=="normal":
+        return dotProductAngle(numpy.subtract(hemeCHC,hemeFe),numpy.subtract((x*hemeCHD+(1-x)*hemeCHC),hemeFe))-angle*numpy.pi/180
+    if orientation=="disordered":
+        return dotProductAngle(numpy.subtract(hemeCHC,hemeFe),numpy.subtract((x*hemeC2B+(1-x)*hemeCHC),hemeFe))-angle*numpy.pi/180
+
