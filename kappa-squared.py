@@ -50,16 +50,17 @@ for row in data[372:386]:
 #gets the XYZ coordinates for relevant tryptophan atoms and writes them to a dictionary
 def getTrpCoordfromPDB(trpNumber):
     #searches entire rows of file
-    for row in data:
-        if row[3]=="TRP" and str(row[5])==str(trpNumber):
-            #checks to see if atom type is TRP as well as the trpNumber (for example 7)
-            for name in trpList:
-                #checks to see if the name of the atom is in the trpList
-                if row[2]==name:
-                    #writes XYZ coordinates to atomXYZ dictionary
-                    atomXYZ[name]=getXYZfromRow(row)
-    #writes trpOrigin to atomXYZ dictionary
-    atomXYZ['trpOrigin']= numpy.add(atomXYZ["CD2"],atomXYZ["CE2"])/2
+    for row in data: 
+        if row[0]=='ATOM':
+            if row[3]=='TRP' and str(row[5])==str(trpNumber):
+                #checks to see if atom type is TRP as well as the trpNumber (for example 7)
+                for name in trpList:
+                    #checks to see if the name of the atom is in the trpList
+                    if row[2]==name:
+                        #writes XYZ coordinates to atomXYZ dictionary
+                        atomXYZ[name]=getXYZfromRow(row)
+        #writes trpOrigin to atomXYZ dictionary
+    atomXYZ['trpOrigin']= numpy.add(atomXYZ['CD2'],atomXYZ['CE2'])/2
 
 #calculates the trpOrigin, needed for calculating the tryptophan coordinates
 #does this need to be global? may want to change to local if dealing with more tryptophans??
@@ -93,7 +94,10 @@ def getHemeCoordfromPDB():
                     atomXYZ[name]=getXYZfromRow(row)
 
 
+getHemeCoordfromPDB()
+getTrpCoordfromPDB(7)
 
+print 'dictionary 1:',atomXYZ
 #returns the kappa squared value given the angles between the dipoles
 def kappaSquared(angle_DA,angle_DT,angle_AT):
     return numpy.square((numpy.cos(angle_DA)-3*numpy.cos(angle_DT)*numpy.cos(angle_AT)))
@@ -110,10 +114,10 @@ def estimationOfKappaSquared():
     #shorten the function name to make code more readable
     dPA = dotProductAngle
     #this is the transition vector from the trp to the heme
-    Trans_V=numpy.subtract(atomXYZ['Fe'],atomXYZ['trpOrigin'])
+    Trans_V=numpy.subtract(atomXYZ['FE'],atomXYZ['trpOrigin'])
     #use this as a rough estimate of the heme normal and disorder dipoles
-    hemeD_Norm_Est = numpy.subtract(atomXYZ['C3C'],atomXYZ['Fe'])
-    hemeD_Dis_Est = numpy.subtract(atomXYZ['C2B'],atomXYZ['Fe'])
+    hemeD_Norm_Est = numpy.subtract(atomXYZ['C3C'],atomXYZ['FE'])
+    hemeD_Dis_Est = numpy.subtract(atomXYZ['C2B'],atomXYZ['FE'])
     #use this as a rough estimate of tryptophan dipole
     trpD_Est = numpy.subtract(trpNE1,trpOrigin)
     kappa_est_normal=kappaSquared(dPA(trpD_Est,hemeD_Norm_Est),dPA(trpD_Est,Trans_V),dPA(hemeD_Norm_Est,Trans_V))
@@ -131,11 +135,13 @@ def estimationOfKappaSquared():
 # flexibility for this coordinate will be desireable. 
 
 def generateHemeDipoleParameter(x,angle,orientation):
-    
+    #add to make code a bit easier to read?
+    aXYZ=atomXYZ
+    print aXYZ
     if orientation=="normal":
-        return dotProductAngle(numpy.subtract(hemeCHC,hemeFe),numpy.subtract((x*hemeCHD+(1-x)*hemeCHC),hemeFe))-angle*numpy.pi/180
+        return dotProductAngle(numpy.subtract(aXYZ['CHC'],aXYZ['FE']),numpy.subtract((x*aXYZ['CHD']+(1-x)*aXYZ['CHC']),aXYZ['FE']))-angle*numpy.pi/180
     if orientation=="disordered":
-        return dotProductAngle(numpy.subtract(hemeCHC,hemeFe),numpy.subtract((x*hemeC2B+(1-x)*hemeCHC),hemeFe))-angle*numpy.pi/180
+        return dotProductAngle(numpy.subtract(aXYZ['CHC'],aXYZ['FE']),numpy.subtract((x*aXYZ['C2B']+(1-x)*aXYZ['CHC']),aXYZ['FE']))-angle*numpy.pi/180
 
 # generates heme diople coordinates. as stated in the comments above, the 'x' parameter needs to be found using the 
 # generateHemeDipoleParameter for a specific angle and orientation.
