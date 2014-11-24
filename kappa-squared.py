@@ -83,14 +83,14 @@ for row in data:
 #this grabs the heme coordinates
 def getHemeCoordfromPDB():
     #searches entire rows of file
-    for i in range(0,len(data)):
+    for row in data:
         #checks to see if atom type is HETATM
-        if data[i][0]=="HETATM":
+        if row[0]=="HETATM":
             for name in hemeList:
                 #checks to see if the name of the atom is in the hemeList
-                if data[i][2]==name:
+                if row[2]==name:
                     #writes XYZ coordinates to atomXYZ dictionary
-                    atomXYZ[name]=[float(data[i][6]),float(data[i][7]),float(data[i][8])]
+                    atomXYZ[name]=getXYZfromRow(row)
 
 
 
