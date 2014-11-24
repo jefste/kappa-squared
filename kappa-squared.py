@@ -69,3 +69,19 @@ def dotProductAngle(vector1,vector2):
     numerator1=numpy.dot(vector1,vector2)
     denominator1=numpy.power(numpy.dot(vector1,vector1)*numpy.dot(vector2,vector2),0.5)
     return numpy.arccos(numerator1/denominator1)
+
+def estimationOfKappaSquared():
+    #shorten the function name to make code more readable
+    dPA = dotProductAngle
+    #this is the transition vector from the trp to the heme
+    Trans_V=numpy.subtract(hemeFe,trpOrigin)
+    #use this as a rough estimate of the heme normal and disorder dipoles
+    hemeD_Norm_Est = numpy.subtract(hemeC3C,hemeFe)
+    hemeD_Dis_Est = numpy.subtract(hemeC2B,hemeFe)
+    #use this as a rough estimate of tryptophan dipole
+    trpD_Est = numpy.subtract(trpNE1,trpOrigin)
+    kappa_est_normal=kappaSquared(dPA(trpD_Est,hemeD_Norm_Est),dPA(trpD_Est,Trans_V),dPA(hemeD_Norm_Est,Trans_V))
+    kappa_est_dis=kappaSquared(dPA(trpD_Est,hemeD_Dis_Est),dPA(trpD_Est,Trans_V),dPA(hemeD_Dis_Est,Trans_V))
+    return kappa_est_normal,kappa_est_dis
+    
+print 'normal: %.3f, disordered:, %.3f' % estimationOfKappaSquared()
