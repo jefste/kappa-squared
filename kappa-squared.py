@@ -1,9 +1,9 @@
 '''
 Calculates the kappa squared of the the local file 1MBD
-imports the coordinates from the txt file
+imports the coordinates from the PDB file
 
 calculates the kappa squared for both the normal and disordered transition dipoles 
-    estimate: uses only the coordinates of the txt file
+    estimate: uses only the coordinates of the PDB file
     exact: generates coordinates of the file for specific angles
 '''
 
@@ -17,6 +17,11 @@ from scipy.optimize import fsolve
 datafile = open('1MBD.pdb', 'r')
 data = []
 
+# create a blank dictionary to write to and read from for XYZ coordinates
+atomXYZ={}
+#lists of tryptophan and heme coordinates to write into atomXYZ dictionary
+trpList=['CD1','CD2','CE2','NE1']
+hemeList=['FE','CHC','CHD','C3C','C2B']
 
 #I think this gets rid of all spaces in "data" variable?
 # maybe it generates 2D array?
