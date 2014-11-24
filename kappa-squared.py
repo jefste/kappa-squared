@@ -94,10 +94,7 @@ def getHemeCoordfromPDB():
                     atomXYZ[name]=getXYZfromRow(row)
 
 
-getHemeCoordfromPDB()
-getTrpCoordfromPDB(7)
 
-print 'dictionary 1:',atomXYZ
 #returns the kappa squared value given the angles between the dipoles
 def kappaSquared(angle_DA,angle_DT,angle_AT):
     return numpy.square((numpy.cos(angle_DA)-3*numpy.cos(angle_DT)*numpy.cos(angle_AT)))
@@ -137,7 +134,7 @@ def estimationOfKappaSquared():
 def generateHemeDipoleParameter(x,angle,orientation):
     #add to make code a bit easier to read?
     aXYZ=atomXYZ
-    print aXYZ
+    
     if orientation=="normal":
         return dotProductAngle(numpy.subtract(aXYZ['CHC'],aXYZ['FE']),numpy.subtract((x*aXYZ['CHD']+(1-x)*aXYZ['CHC']),aXYZ['FE']))-angle*numpy.pi/180
     if orientation=="disordered":
