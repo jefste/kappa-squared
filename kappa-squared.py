@@ -89,10 +89,25 @@ def estimationOfKappaSquared():
 # used for debugging output of estimated k^2
 #print 'normal: %.3f, disordered:, %.3f' % estimationOfKappaSquared()
 
-#generates the coordinates for a heme dipole       
+# generates the parameter 'x' to be used in the function hemeDipoleCoordinates(x,orientation)
+# an initial guess for 'x' is needed, typically use .5 as the inital guess. The program works such that it creates a line
+# using the points CHC and CHD (for the normal case) for which a coordinate generated on the this line is will 
+# be a dipole for the desired angle. By using 0.5, the midpoint of the line is used as a starting guesss.
+# Typically an angle of 55 degrees is used for the generated heme dipole, but if it is desired to generate a 'fish' plot
+# flexibility for this coordinate will be desireable. 
+
 def generateHemeDipoleParameter(x,angle,orientation):
+    
     if orientation=="normal":
         return dotProductAngle(numpy.subtract(hemeCHC,hemeFe),numpy.subtract((x*hemeCHD+(1-x)*hemeCHC),hemeFe))-angle*numpy.pi/180
     if orientation=="disordered":
         return dotProductAngle(numpy.subtract(hemeCHC,hemeFe),numpy.subtract((x*hemeC2B+(1-x)*hemeCHC),hemeFe))-angle*numpy.pi/180
 
+# generates heme diople coordinates. as stated in the comments above, the 'x' parameter needs to be found using the 
+# generateHemeDipoleParameter for a specific angle and orientation.
+# this function returns a list of [X,Y,Z] coordinates for the generated heme dipole.
+def hemeDipoleCoordinates(x,orientation):
+    if orientation=="normal":
+        return x*hemeCHD+(1-x)*hemeCHC
+    if orientation=="disordered":
+        return x*hemeC2B+(1-x)*hemeCHC
