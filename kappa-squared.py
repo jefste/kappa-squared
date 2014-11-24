@@ -34,19 +34,6 @@ def getXYZfromRow(row):
     return [float(row[6]),float(row[7]),float(row[8])]
 
 
-#this grabs the tryptophan coordinates, only for the specific case. 
-#should change this so that the range is more flexible, and also so that it prompts for which tryptophan is of interest
-for row in data[372:386]:
-    if row[2]=='CD1':
-        trpCD1=getXYZfromRow(row)
-    if row[2]=='CD2':
-        trpCD2=getXYZfromRow(row)
-    if row[2]=='CE2':
-        trpCE2=getXYZfromRow(row)
-    if row[2]=='NE1':
-        trpNE1=getXYZfromRow(row)
-
-
 #gets the XYZ coordinates for relevant tryptophan atoms and writes them to a dictionary
 def getTrpCoordfromPDB(trpNumber):
     #searches entire rows of file
@@ -61,24 +48,6 @@ def getTrpCoordfromPDB(trpNumber):
                         atomXYZ[name]=getXYZfromRow(row)
         #writes trpOrigin to atomXYZ dictionary
     atomXYZ['trpOrigin']= numpy.add(atomXYZ['CD2'],atomXYZ['CE2'])/2
-
-#calculates the trpOrigin, needed for calculating the tryptophan coordinates
-#does this need to be global? may want to change to local if dealing with more tryptophans??
-trpOrigin = numpy.add(trpCD2,trpCE2)/2
-
-#this grabs the heme coordinates
-for row in data:
-    if row[0]=='HETATM':
-        if row[2]=='FE':
-            hemeFe=getXYZfromRow(row)
-        if row[2]=='CHC':
-            hemeCHC=getXYZfromRow(row)
-        if row[2]=='CHD':
-            hemeCHD=getXYZfromRow(row)
-        if row[2]=='C3C':
-            hemeC3C=getXYZfromRow(row)
-        if row[2]=='C2B':
-            hemeC2B=getXYZfromRow(row)
 
 
 #this grabs the heme coordinates
@@ -116,7 +85,7 @@ def estimationOfKappaSquared():
     hemeD_Norm_Est = numpy.subtract(atomXYZ['C3C'],atomXYZ['FE'])
     hemeD_Dis_Est = numpy.subtract(atomXYZ['C2B'],atomXYZ['FE'])
     #use this as a rough estimate of tryptophan dipole
-    trpD_Est = numpy.subtract(trpNE1,trpOrigin)
+    trpD_Est = numpy.subtract(atomXYZ['NE1'],atomXYZ['trpOrigin'])
     kappa_est_normal=kappaSquared(dPA(trpD_Est,hemeD_Norm_Est),dPA(trpD_Est,Trans_V),dPA(hemeD_Norm_Est,Trans_V))
     kappa_est_dis=kappaSquared(dPA(trpD_Est,hemeD_Dis_Est),dPA(trpD_Est,Trans_V),dPA(hemeD_Dis_Est,Trans_V))
     return kappa_est_normal,kappa_est_dis
