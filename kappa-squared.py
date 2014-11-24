@@ -111,3 +111,9 @@ def hemeDipoleCoordinates(x,orientation):
         return x*hemeCHD+(1-x)*hemeCHC
     if orientation=="disordered":
         return x*hemeC2B+(1-x)*hemeCHC
+
+# works in a very similar manner to generateHemeDipoleParameter function, but don't need flexibility of normal and disordered orientation
+# realistically, don't need the angle parameter, because it should always be 38 degrees.
+def generateTrpDipoleParameter(x,angle):
+    return dotProductAngle(numpy.subtract(trpCD1,trpOrigin),numpy.subtract((x*trpCD1+(1-x)*trpNE1),trpOrigin))-angle*numpy.pi/180
+
