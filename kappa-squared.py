@@ -110,10 +110,10 @@ def estimationOfKappaSquared():
     #shorten the function name to make code more readable
     dPA = dotProductAngle
     #this is the transition vector from the trp to the heme
-    Trans_V=numpy.subtract(atomXYZ['hemeFe'],atomXYZ['trpOrigin'])
+    Trans_V=numpy.subtract(atomXYZ['Fe'],atomXYZ['trpOrigin'])
     #use this as a rough estimate of the heme normal and disorder dipoles
-    hemeD_Norm_Est = numpy.subtract(atomXYZ['hemeC3C'],atomXYZ['hemeFe'])
-    hemeD_Dis_Est = numpy.subtract(atomXYZ['hemeC2B'],atomXYZ['hemeFe'])
+    hemeD_Norm_Est = numpy.subtract(atomXYZ['C3C'],atomXYZ['Fe'])
+    hemeD_Dis_Est = numpy.subtract(atomXYZ['C2B'],atomXYZ['Fe'])
     #use this as a rough estimate of tryptophan dipole
     trpD_Est = numpy.subtract(trpNE1,trpOrigin)
     kappa_est_normal=kappaSquared(dPA(trpD_Est,hemeD_Norm_Est),dPA(trpD_Est,Trans_V),dPA(hemeD_Norm_Est,Trans_V))
