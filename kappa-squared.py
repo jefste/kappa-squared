@@ -40,3 +40,25 @@ for row in data[372:386]:
         trpCE2=getXYZfromRow(row)
     if row[2]=='NE1':
         trpNE1=getXYZfromRow(row)
+
+
+#calculates the trpOrigin, needed for calculating the tryptophan coordinates
+#does this need to be global? may want to change to local if dealing with more tryptophans??
+trpOrigin = numpy.add(trpCD2,trpCE2)/2
+
+
+
+#this grabs the heme coordinates
+for row in data:
+    if row[0]=='HETATM':
+        if row[2]=='FE':
+            hemeFe=getXYZfromRow(row)
+        if row[2]=='CHC':
+            hemeCHC=getXYZfromRow(row)
+        if row[2]=='CHD':
+            hemeCHD=getXYZfromRow(row)
+        if row[2]=='C3C':
+            hemeC3C=getXYZfromRow(row)
+        if row[2]=='C2B':
+            hemeC2B=getXYZfromRow(row)
+
