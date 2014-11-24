@@ -165,6 +165,9 @@ def kappaSquaredRoutine():
     gHDP=generateHemeDipoleParameter
     dPA = dotProductAngle
     aXYZ = atomXYZ
+    #grabs coordinates for trp(specify number) and heme
+    getTrpCoordfromPDB(7)
+    getHemeCoordfromPDB()
     #this is the transition vector from the trp to the heme
     Trans_V=numpy.subtract(aXYZ['FE'],aXYZ['trpOrigin'])
     #use this as a rough estimate of the heme normal and disorder dipoles
