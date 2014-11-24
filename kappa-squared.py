@@ -46,8 +46,6 @@ for row in data[372:386]:
 #does this need to be global? may want to change to local if dealing with more tryptophans??
 trpOrigin = numpy.add(trpCD2,trpCE2)/2
 
-
-
 #this grabs the heme coordinates
 for row in data:
     if row[0]=='HETATM':
@@ -62,3 +60,12 @@ for row in data:
         if row[2]=='C2B':
             hemeC2B=getXYZfromRow(row)
 
+#returns the kappa squared value given the angles between the dipoles
+def kappaSquared(angle_DA,angle_DT,angle_AT):
+    return numpy.square((numpy.cos(angle_DA)-3*numpy.cos(angle_DT)*numpy.cos(angle_AT)))
+
+#gives the angle between 2 vectors, in radians
+def dotProductAngle(vector1,vector2):
+    numerator1=numpy.dot(vector1,vector2)
+    denominator1=numpy.power(numpy.dot(vector1,vector1)*numpy.dot(vector2,vector2),0.5)
+    return numpy.arccos(numerator1/denominator1)
