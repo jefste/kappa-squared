@@ -167,10 +167,12 @@ def kappaSquaredRoutine():
     hDC= hemeDipoleCoordinates
     gHDP=generateHemeDipoleParameter
     dPA = dotProductAngle
-    hemeD_Norm =numpy.subtract(hDC(fsolve(gHDP,.5,(55,"normal")),"normal"),hemeFe)
-    hemeD_Dis =numpy.subtract(hDC(fsolve(gHDP,.5,(55,"disordered")),"disordered"),hemeFe)
+    aXYZ = atomXYZ
+
+    hemeD_Norm =numpy.subtract(hDC(fsolve(gHDP,.5,(55,"normal")),"normal"),aXYZ['FE'])
+    hemeD_Dis =numpy.subtract(hDC(fsolve(gHDP,.5,(55,"disordered")),"disordered"),aXYZ['FE'])
     #use this as a rough estimate of tryptophan dipole
-    trpD = numpy.subtract(trpDipoleCoordinates(fsolve(generateTrpDipoleParameter,.5,38)),trpOrigin)
+    trpD = numpy.subtract(trpDipoleCoordinates(fsolve(generateTrpDipoleParameter,.5,38)),aXYZ['trpOrigin'])
     #calculates the normal and disordered
     normKap=kappaSquared(dPA(trpD,hemeD_Norm),dPA(trpD,Trans_V),dPA(hemeD_Norm,Trans_V))
     disorderedKap=kappaSquared(dPA(trpD,hemeD_Dis),dPA(trpD,Trans_V),dPA(hemeD_Dis,Trans_V))
