@@ -200,6 +200,17 @@ def grabPDB():
                 print "Did the PDB download and save (does file exist)?",os.path.isfile(pathnamePDB)
                 return pdbID.upper()
 
+def findTrp():
+    trpAtNumber=[]
+    for row in data: 
+        if row[0]=='ATOM':
+            if row[3]=='TRP' and row[5] not in trpAtNumber:
+                trpAtNumber.append(row[5])
+    print 'Found tryptophan at locations:',trpAtNumber
+                
+
+
+
 def main():
     #checks to see if PDB is local or needs downloading, then parses data from file for reading in program.
     readFromDatafile(grabPDB())
