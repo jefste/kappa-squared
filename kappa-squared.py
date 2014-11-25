@@ -8,8 +8,10 @@ calculates the kappa squared for both the normal and disordered transition dipol
 '''
 
 import numpy
-import scipy
+import scipy   
 import sys
+
+import csv
 
 import urllib
 import requests
@@ -232,6 +234,27 @@ def whichTrpToMeasure():
         return  promptForTrp(trpsAtlocations)
 
 
+#def readPDB_ksq_db():
+    # check inputs vs CSV file to see if the data has already been calculated
+        # open CSV
+        # check each row of csv to see if PDB already exists
+            # if the k^2 for the tryptophan-heme pair for the matching PDB has already been calculated
+                #if it has, return the data
+                #else, run the routine, then write to csv.
+
+#def writePDB_to_ksq_db(pdbID,trpNumber):
+    #stringOut=pdbID+','+str(trpNumber)+','+ str()+','+   \
+    #    str().strip('()')+','+                              \
+    #    str().strip('()')
+    #stringOut = (pdbID,trpNumber,distanceCentertoCenter(trpNumber),
+    #        kappaSquaredRoutine(trpNumber),
+    #        estimationOfKappaSquared(trpNumber)
+    #        )
+    #print stringOut
+    #with open('k_sq_db.csv', 'a') as f:
+    #    writer = csv.writer(f)
+    #    writer.writerow(stringOut)
+        
 
 def main():
     #checks to see if PDB is local or needs downloading, then parses data from file for reading in program.
@@ -248,3 +271,6 @@ def main():
     print 'normal: %.3f \t disordered: %.3f' % estimationOfKappaSquared(trpNumber)
 
 main()
+
+#readFromDatafile(grabPDB())
+#writePDB_to_ksq_db('1JP6',7)
