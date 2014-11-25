@@ -206,24 +206,40 @@ def findTrp():
         if row[0]=='ATOM':
             if row[3]=='TRP' and int(row[5]) not in trpAtNumber:
                 trpAtNumber.append(int(row[5]))
-    print 'Found tryptophan at locations:',trpAtNumber
     return trpAtNumber
                 
+def promptForTrp(trpsAtlocations):
+    while True:
+        trpNumber = int(raw_input('Found tryptophan at locations: '+str(trpsAtlocations).strip('[]')+'\nWhich tryptophan to use for calcuations? '))
+        if trpNumber not in trpsAtlocations:
+            print 'No tryptophan at location ', trpNumber
+        else:
+            return trpNumber
+
+def whichTrpToMeasure():
+    trpsAtlocations=findTrp()
+    print 'length:',len(sys.argv)
+    if len(sys.argv)>2:
+        #reads the second argument after the .py file
+        #example: python kappa-squared.py 1MBD 14
+        #this reads the 14 for the tryptophan number 
+        if int(sys.argv[2]) in trpsAtlocations:
+             return int(sys.argv[2])
+        else:
+            print 'No tryptophan at location', int(sys.argv[2])
+            return promptForTrp(trpsAtlocations)
+    else:
+        print 'No tryptophan specified'
+        return  promptForTrp(trpsAtlocations)
 
 
 
 def main():
     #checks to see if PDB is local or needs downloading, then parses data from file for reading in program.
     readFromDatafile(grabPDB())
-    findTrp()
-    if len(sys.argv)>=2:
-        #reads the second argument after the .py file
-        #example: python kappa-squared.py 1MBD 14
-        #this reads the 14 for the tryptophan number 
-        trpNumber=int(sys.argv[2])
-    else:
-        # puts 7 no argument is given 
-        trpNumber=7
+    
+    trpNumber=whichTrpToMeasure()
+    
     #prints output for user to see difference between estimated and generated kappa squared values    
     print 'center to center distance between heme and trp %i dipoles' % trpNumber
     print '(in Angstroms): %.2f' % distanceCentertoCenter(trpNumber)
