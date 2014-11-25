@@ -76,9 +76,12 @@ def dotProductAngle(vector1,vector2):
 
 
 #estimates kappa squared without doing any calcuations, only uses coordinates of file
-def estimationOfKappaSquared():
+def estimationOfKappaSquared(trpNumber):
     #shorten the function name to make code more readable
     dPA = dotProductAngle
+    # get XYZ coordinates for tryptophan and heme
+    getTrpCoordfromPDB(trpNumber)
+    getHemeCoordfromPDB()
     #this is the transition vector from the trp to the heme
     Trans_V=numpy.subtract(atomXYZ['FE'],atomXYZ['trpOrigin'])
     #use this as a rough estimate of the heme normal and disorder dipoles
@@ -156,9 +159,9 @@ def kappaSquaredRoutine(trpNumber):
 
 
 #prints output for user to see difference between estimated and generated kappa squared values    
-print 'center to center distance between dipoles (in Angstroms):',distanceCentertoCenter()
+print 'center to center distance between dipoles (in Angstroms):',distanceCentertoCenter(7)
 print "kappa squared for generated coordinates"
 print "normal: %.3f \t disordered: %.3f" % kappaSquaredRoutine(7)
 print 'kappa squared for estimated coordinates'
-print 'normal: %.3f \t disordered: %.3f' % estimationOfKappaSquared()
+print 'normal: %.3f \t disordered: %.3f' % estimationOfKappaSquared(7)
 
