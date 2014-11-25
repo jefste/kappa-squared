@@ -218,7 +218,6 @@ def promptForTrp(trpsAtlocations):
 
 def whichTrpToMeasure():
     trpsAtlocations=findTrp()
-    print 'length:',len(sys.argv)
     if len(sys.argv)>2:
         #reads the second argument after the .py file
         #example: python kappa-squared.py 1MBD 14
