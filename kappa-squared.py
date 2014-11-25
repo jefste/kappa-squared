@@ -16,8 +16,15 @@ from scipy import *
 from numpy import *
 from scipy.optimize import fsolve
 
+
+#reads the first argument after the .py file
+#example: python kappa-squared.py 1MBD 14
+#this reads the PDB 1MBD in the subfolder PDB
+pdbFileName = sys.argv[1]
+
+
 #need to change the directory to the file you want to open    
-datafile = open('1MBD.pdb', 'r')
+datafile = open('PDB/'+pdbFileName+'.pdb', 'r')
 data = []
 
 # create a blank dictionary to write to and read from for XYZ coordinates
@@ -167,10 +174,10 @@ def main():
     if len(sys.argv)>2:
         #reads the second argument after the .py file
         #example: python kappa-squared.py 1MBD 14
-        #this reads the 14 for t2he tryptophan number 
+        #this reads the 14 for the tryptophan number 
         trpNumber=int(sys.argv[2])
     else:
-        # puts 7 no argument is given  correct value 
+        # puts 7 no argument is given 
         trpNumber=7
     #prints output for user to see difference between estimated and generated kappa squared values    
     print 'center to center distance between heme and trp %i dipoles' % trpNumber
