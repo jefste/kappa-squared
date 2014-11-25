@@ -128,6 +128,11 @@ def trpDipoleCoordinates(x):
     return x*atomXYZ['CD1']+(1-x)*atomXYZ['NE1']
 
 
+def distanceCentertoCenter(trpNumber):
+    getTrpCoordfromPDB(trpNumber)
+    getHemeCoordfromPDB()
+    return numpy.linalg.norm(subtract(atomXYZ["FE"],atomXYZ["trpOrigin"]))
+
 def kappaSquaredRoutine():
     #shorten function names just to make it a bit 'easier' to read the lines following code
     hDC= hemeDipoleCoordinates
@@ -151,8 +156,9 @@ def kappaSquaredRoutine():
 
 
 #prints output for user to see difference between estimated and generated kappa squared values    
+print 'center to center distance between dipoles (in Angstroms):',distanceCentertoCenter()
 print "kappa squared for generated coordinates"
-print "normal: %.3f \t  disordered: %.3f" % kappaSquaredRoutine()
+print "normal: %.3f \t disordered: %.3f" % kappaSquaredRoutine()
 print 'kappa squared for estimated coordinates'
 print 'normal: %.3f \t disordered: %.3f' % estimationOfKappaSquared()
 
