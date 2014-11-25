@@ -9,6 +9,9 @@ calculates the kappa squared for both the normal and disordered transition dipol
 
 import numpy
 import scipy
+import sys
+
+
 from scipy import *
 from numpy import *
 from scipy.optimize import fsolve
@@ -158,10 +161,23 @@ def kappaSquaredRoutine(trpNumber):
     return normKap,disorderedKap
 
 
-#prints output for user to see difference between estimated and generated kappa squared values    
-print 'center to center distance between dipoles (in Angstroms):',distanceCentertoCenter(7)
-print "kappa squared for generated coordinates"
-print "normal: %.3f \t disordered: %.3f" % kappaSquaredRoutine(7)
-print 'kappa squared for estimated coordinates'
-print 'normal: %.3f \t disordered: %.3f' % estimationOfKappaSquared(7)
 
+def main():
+    
+    if len(sys.argv)>2:
+        #reads the second argument after the .py file
+        #example: python kappa-squared.py 1MBD 14
+        #this reads the 14 for t2he tryptophan number 
+        trpNumber=int(sys.argv[2])
+    else:
+        # puts 7 no argument is given  correct value 
+        trpNumber=7
+    #prints output for user to see difference between estimated and generated kappa squared values    
+    print 'center to center distance between heme and trp %i dipoles' % trpNumber
+    print '(in Angstroms): %.2f' % distanceCentertoCenter(trpNumber)
+    print "kappa squared for generated coordinates"
+    print "normal: %.3f \t disordered: %.3f" % kappaSquaredRoutine(trpNumber)
+    print 'kappa squared for estimated coordinates'
+    print 'normal: %.3f \t disordered: %.3f' % estimationOfKappaSquared(trpNumber)
+
+main()
