@@ -171,7 +171,7 @@ def kappaSquaredRoutine(trpNumber):
 
 def main():
     
-    if len(sys.argv)>2:
+    if len(sys.argv)>=2:
         #reads the second argument after the .py file
         #example: python kappa-squared.py 1MBD 14
         #this reads the 14 for the tryptophan number 
