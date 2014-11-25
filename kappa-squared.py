@@ -204,9 +204,10 @@ def findTrp():
     trpAtNumber=[]
     for row in data: 
         if row[0]=='ATOM':
-            if row[3]=='TRP' and row[5] not in trpAtNumber:
-                trpAtNumber.append(row[5])
+            if row[3]=='TRP' and int(row[5]) not in trpAtNumber:
+                trpAtNumber.append(int(row[5]))
     print 'Found tryptophan at locations:',trpAtNumber
+    return trpAtNumber
                 
 
 
@@ -214,7 +215,7 @@ def findTrp():
 def main():
     #checks to see if PDB is local or needs downloading, then parses data from file for reading in program.
     readFromDatafile(grabPDB())
-
+    findTrp()
     if len(sys.argv)>=2:
         #reads the second argument after the .py file
         #example: python kappa-squared.py 1MBD 14
