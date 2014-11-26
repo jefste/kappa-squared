@@ -234,7 +234,10 @@ def whichTrpToMeasure():
         return  promptForTrp(trpsAtlocations)
 
 
-#def readPDB_ksq_db():
+#def readPDB_ksq_db(pdbID,trpNumber):
+#    with open('k_sq_db.csv', 'r') as f:
+#    for row in f:
+#        print row[0]
     # check inputs vs CSV file to see if the data has already been calculated
         # open CSV
         # check each row of csv to see if PDB already exists
@@ -242,18 +245,15 @@ def whichTrpToMeasure():
                 #if it has, return the data
                 #else, run the routine, then write to csv.
 
-#def writePDB_to_ksq_db(pdbID,trpNumber):
-    #stringOut=pdbID+','+str(trpNumber)+','+ str()+','+   \
-    #    str().strip('()')+','+                              \
-    #    str().strip('()')
-    #stringOut = (pdbID,trpNumber,distanceCentertoCenter(trpNumber),
-    #        kappaSquaredRoutine(trpNumber),
-    #        estimationOfKappaSquared(trpNumber)
-    #        )
-    #print stringOut
-    #with open('k_sq_db.csv', 'a') as f:
-    #    writer = csv.writer(f)
-    #    writer.writerow(stringOut)
+def writePDB_to_ksq_db(pdbID,trpNumber):
+    # builds up row to be written to file (combines and flattens tuples)
+    stringOut = (pdbID,)+(trpNumber,)+(distanceCentertoCenter(trpNumber),)
+    stringOut+=kappaSquaredRoutine(trpNumber)+estimationOfKappaSquared(trpNumber)
+    #writes stringOut to a single row
+    print stringOut
+    with open('k_sq_db.csv', 'a') as f:
+        writer = csv.writer(f)
+        writer.writerow(stringOut)
         
 
 def main():
