@@ -235,7 +235,9 @@ def whichTrpToMeasure():
 
 
 def readPDB_ksq_db(pdbID,trpNumber):
-    with open('k_sq_db.csv', 'rb') as dbfile:
+    #with command opens and closes file, was 'rb' for open command, changed to 'rU'
+    #because of error message 'new-line character seen in unquoted field'
+    with open('k_sq_db.csv', 'rU') as dbfile:
         reader=csv.reader(dbfile, delimiter=',')
         for row in reader:
             if pdbID==str(row[0]):
