@@ -196,6 +196,10 @@ def grabPDB():
             #checks to see if PDB exists
             if requests.get(url).status_code!=200:
                 print "PDB structure name: "+ pdbID +" not found"    
+                # the program gets stuck in this loop if the PDB is not found, need to address this issue
+                # pdbID = str(raw_input("enter another PDB Structure: ")).upper()
+                # url = "http://www.rcsb.org/pdb/download/downloadFile.do?fileFormat=pdb&compression=NO&structureId="+pdbID
+                # pathnamePDB="PDB/"+pdbID+".pdb"
             else:
                 print "pdb found"
                 urllib.urlretrieve (url, pathnamePDB)
@@ -243,7 +247,7 @@ def readPDB_ksq_db(pdbID,trpNumber):
             if pdbID==str(row[0]):
                 if trpNumber==int(row[1]):
                     #print 'Data exists:', row
-                    return [row[i] for i in range(2,len(row))]
+                    return [row[i] for i in range(len(row))]
                 else:
                     return None
                     # find a nicer way to output this to the screen
@@ -268,13 +272,12 @@ def writePDB_to_ksq_db(pdbID,trpNumber):
     return stringOut
         
 def print_out(stringData):
-    print stringData
-    # print 'center to center distance between heme and trp %i dipoles' % trpNumber
-    # print '(in Angstroms): %.2f' % distanceCentertoCenter(trpNumber)
-    # print "kappa squared for generated coordinates"
-    # print "normal: %.3f \t disordered: %.3f" % kappaSquaredRoutine(trpNumber)
-    # print 'kappa squared for estimated coordinates'
-    # print 'normal: %.3f \t disordered: %.3f' % estimationOfKappaSquared(trpNumber)
+    print 'center to center distance between heme dipole and trp '+str(stringData[1])+' dipoles'
+    print '(in Angstroms): %.2f' % float(stringData[2])
+    print "kappa squared for generated coordinates"
+    print "normal: %.3f \t disordered: %.3f" % (float(stringData[3]),float(stringData[4]))
+    print 'kappa squared for estimated coordinates'
+    print 'normal: %.3f \t disordered: %.3f' % (float(stringData[5]),float(stringData[6]))
 
 
 def main():
@@ -292,4 +295,3 @@ def main():
         print_out(from_db)
 
 main()
-
