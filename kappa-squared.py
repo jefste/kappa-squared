@@ -234,10 +234,16 @@ def whichTrpToMeasure():
         return  promptForTrp(trpsAtlocations)
 
 
-#def readPDB_ksq_db(pdbID,trpNumber):
-#    with open('k_sq_db.csv', 'r') as f:
-#    for row in f:
-#        print row[0]
+def readPDB_ksq_db(pdbID,trpNumber):
+    with open('k_sq_db.csv', 'rb') as dbfile:
+        reader=csv.reader(dbfile, delimiter=',')
+        for row in reader:
+            if pdbID==str(row[0]):
+                if trpNumber==int(row[1]):
+                    print 'Data exists:', row
+                    # find a nicer way to output this to the screen
+                    
+            
     # check inputs vs CSV file to see if the data has already been calculated
         # open CSV
         # check each row of csv to see if PDB already exists
@@ -272,5 +278,6 @@ def main():
 
 main()
 
-#readFromDatafile(grabPDB())
-#writePDB_to_ksq_db('1JP6',7)
+# readFromDatafile(grabPDB())
+# writePDB_to_ksq_db('1JP6',7)
+# readPDB_ksq_db('1JP6',7)
