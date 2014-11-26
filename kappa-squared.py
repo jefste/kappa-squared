@@ -240,7 +240,10 @@ def readPDB_ksq_db(pdbID,trpNumber):
         for row in reader:
             if pdbID==str(row[0]):
                 if trpNumber==int(row[1]):
-                    print 'Data exists:', row
+                    #print 'Data exists:', row
+                    return [row[i] for i in range(2,len(row))]
+                else:
+                    return None
                     # find a nicer way to output this to the screen
                     
             
@@ -260,24 +263,31 @@ def writePDB_to_ksq_db(pdbID,trpNumber):
     with open('k_sq_db.csv', 'a') as f:
         writer = csv.writer(f)
         writer.writerow(stringOut)
+    return stringOut
         
+def print_out(stringData):
+    print stringData
+    # print 'center to center distance between heme and trp %i dipoles' % trpNumber
+    # print '(in Angstroms): %.2f' % distanceCentertoCenter(trpNumber)
+    # print "kappa squared for generated coordinates"
+    # print "normal: %.3f \t disordered: %.3f" % kappaSquaredRoutine(trpNumber)
+    # print 'kappa squared for estimated coordinates'
+    # print 'normal: %.3f \t disordered: %.3f' % estimationOfKappaSquared(trpNumber)
+
 
 def main():
     #checks to see if PDB is local or needs downloading, then parses data from file for reading in program.
-    readFromDatafile(grabPDB())
-    
+    pdbID=grabPDB()
+    readFromDatafile(pdbID)
+
     trpNumber=whichTrpToMeasure()
-    
-    #prints output for user to see difference between estimated and generated kappa squared values    
-    print 'center to center distance between heme and trp %i dipoles' % trpNumber
-    print '(in Angstroms): %.2f' % distanceCentertoCenter(trpNumber)
-    print "kappa squared for generated coordinates"
-    print "normal: %.3f \t disordered: %.3f" % kappaSquaredRoutine(trpNumber)
-    print 'kappa squared for estimated coordinates'
-    print 'normal: %.3f \t disordered: %.3f' % estimationOfKappaSquared(trpNumber)
+
+    from_db = readPDB_ksq_db(pdbID,trpNumber)    
+    if from_db ==None:
+        written_to_db = writePDB_to_ksq_db(pdbID,trpNumber)
+        print_out(written_to_db)
+    else:
+        print_out(from_db)
 
 main()
 
-# readFromDatafile(grabPDB())
-# writePDB_to_ksq_db('1JP6',7)
-# readPDB_ksq_db('1JP6',7)
