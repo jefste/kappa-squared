@@ -212,6 +212,8 @@ def findTrp():
         if row[0]=='ATOM':
             if row[3]=='TRP' and int(row[5]) not in trpAtNumber:
                 trpAtNumber.append(int(row[5]))
+    if len(trpAtNumber)==0:
+        sys.exit('No tryptophan found for PDB specified. Aborting script.')
     return trpAtNumber
                 
 def promptForTrp(trpsAtlocations):
