@@ -178,7 +178,8 @@ def kappaSquaredRoutine(trpNumber):
 def grabPDB():
     while True:
         #prompts user for input of PDB structure. PDB is not case sensitive
-        if len(sys.argv)>=1:
+        # checks to see if an value was given for the argument
+        if len(sys.argv)>1:
             # reads 1st argument after k-s.py and converts to uppercase
             pdbID = sys.argv[1].upper()
         else:

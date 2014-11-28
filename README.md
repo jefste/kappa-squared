@@ -20,6 +20,7 @@ Currently the program:
 	*if the file does not exist locally, program will download the PDB from the PDB db
 	*if the file does exist locally, the program checks a database file (csv file) to see if your data has already been calculated
 	*if no tryptophan is specified, the program will determine at what locations the tryptophans are stored and allow you to select one of them
+*has some error handling
 
 TO RUN THIS PROGRAM:
 The files/directories needed are 'kappa-squared.py', 'k_sq_db.csv' and a directory 'PDB' in the same directory as the .py and .csv file.
@@ -29,15 +30,17 @@ This will calculate kappa squared for the pdb file 1MBD for tryptophan 7.
 Example of other valid usage:
 $ python kappa-squared.py 1MBD 
 This will prompt user to input which tryptophan to use to calculate kappa squared.
-
+Example of other valid usage:
+$ python kappa-squared.py
+This will prompt user to input a PDB and tryptophan to use to calculate kappa squared.
 
   
 
 Future things to implement:
 *error handling:
-	*be able to run program without specifying a pdb or trp
 	*handle invalid pdb name
 	*handle invalid pdb file (abort if no trp or heme are found)
+		*currently aborts script if there are no trps found
 *generate fish plot for each pdb
 *use mplot3d/matplotlib to draw the tryptophan and heme structures, draw the transition dipoles for each as well as the transition vector
 *read from large MD file to map distance and kappa squared over time (need old MD files for this)
