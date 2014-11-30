@@ -29,7 +29,6 @@ mCFP=mergeCoordinatesForPlotting
 def addListtoPlot(listOfkeys,plotname,linecolor):
 	plotname.plot(mCFP(listOfkeys,0),mCFP(listOfkeys,1),mCFP(listOfkeys,2),color = linecolor)
 
-
 addListtoPlot(['CD1','NE1','CE2','CD2'],ax,'r')
 addListtoPlot(['NE1','trpOrigin'],ax,'b')
 addListtoPlot(['FE','trpOrigin'],ax,'g')
@@ -38,5 +37,30 @@ addListtoPlot(['CHC','FE','CHD'],ax,'r')
 #ax.plot(mCFP(hemeList,0),mCFP(hemeList,1),mCFP(hemeList,2),color = 'b')
 
 
+#shows plot
+#matplotlib.pyplot.show()
 
-matplotlib.pyplot.show()
+# add function to read the 'CONECT' lines in 
+
+def listToDraw():
+    connections=[]
+    hemeListFull=[]
+    for row in data:
+        if row[0]=='CONECT':
+            connections.append(row)
+
+    for row in data:
+        if row[0]=='HETATM':
+            hemeListFull.append(row)
+    
+    for i in range(5,6):
+        print hemeListFull[i][1],hemeListFull[i]
+    # prints the row if the index is found. just use FE to see if logic works. (seems to)
+    print [row for row in connections if hemeListFull[5][1] in row]
+
+
+listToDraw()
+#print hemeListFull
+#print connections
+# add function to grab all heme coordinates and all trp coordinates
+
