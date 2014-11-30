@@ -26,9 +26,17 @@ def mergeCoordinatesForPlotting(listOfkeys,index):
 #simplify for readibility
 mCFP=mergeCoordinatesForPlotting
 #plots sets of coordinates
-#
-ax.plot(mCFP(trpList,0),mCFP(trpList,1),mCFP(trpList,2),color = 'r')
-ax.plot(mCFP(hemeList,0),mCFP(hemeList,1),mCFP(hemeList,2),color = 'b')
+def addListtoPlot(listOfkeys,plotname,linecolor):
+	plotname.plot(mCFP(listOfkeys,0),mCFP(listOfkeys,1),mCFP(listOfkeys,2),color = linecolor)
+
+
+addListtoPlot(['CD1','NE1','CE2','CD2'],ax,'r')
+addListtoPlot(['NE1','trpOrigin'],ax,'b')
+addListtoPlot(['FE','trpOrigin'],ax,'g')
+
+addListtoPlot(['CHC','FE','CHD'],ax,'r')
+#ax.plot(mCFP(hemeList,0),mCFP(hemeList,1),mCFP(hemeList,2),color = 'b')
+
 
 
 matplotlib.pyplot.show()
