@@ -42,6 +42,17 @@ addListtoPlot(['CHC','FE','CHD'],ax,'r')
 
 # add function to read the 'CONECT' lines in 
 
+
+def parseConnectList(listtoparse,startCoordinate):
+    mylist=[]    
+    print startCoordinate
+    for row in listtoparse:
+        for item in row:        
+            if str(item) != 'CONECT':
+                mylist.append(item)  
+    #creates list of atoms
+    return mylist
+
 def listToDraw():
     connections=[]
     hemeListFull=[]
@@ -53,14 +64,15 @@ def listToDraw():
         if row[0]=='HETATM':
             hemeListFull.append(row)
     
-    for i in range(5,6):
-        print hemeListFull[i][1],hemeListFull[i]
+#    for i in range(5,6):
+#        print hemeListFull[i][1],hemeListFull[i]
     # prints the row if the index is found. just use FE to see if logic works. (seems to)
-    print [row for row in connections if hemeListFull[5][1] in row]
+    connectList= [row for row in connections if hemeListFull[5][1] in row]
+    print parseConnectList(connectList,hemeListFull[5][1])
 
+    
 
 listToDraw()
 #print hemeListFull
 #print connections
 # add function to grab all heme coordinates and all trp coordinates
-
