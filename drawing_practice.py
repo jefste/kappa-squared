@@ -50,8 +50,12 @@ def parseConnectList(listtoparse,startCoordinate):
         for item in row:        
             if str(item) != 'CONECT':
                 mylist.append(item)  
+        #add newline as place holder for now. need to decide best way forward on combining the atom numbers.q
+        mylist.append('newline')
     #creates list of atoms
     return mylist
+
+
 
 def listToDraw():
     connections=[]
