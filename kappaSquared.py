@@ -191,7 +191,7 @@ def grabPDB():
         #checks to see if the path and the file name exists. Is this redunant? Maybe only need to check for file exisiting?
         #Note that when checking exists or isfile, the function does not appear to be case dependant
         if os.path.exists(pathnamePDB) and os.path.isfile(pathnamePDB):
-            print  "reading file locally"
+            print  "reading PDB file locally"
             return pdbID.upper()
         else:
             #checks to see if PDB exists
@@ -247,15 +247,21 @@ def readPDB_ksq_db(pdbID,trpNumber):
     with open('k_sq_db.csv', 'rU') as dbfile:
         reader=csv.reader(dbfile, delimiter=',')
         for row in reader:
+            print 'row[0]:',row[0]
             if pdbID==str(row[0]):
+                print 'found PDB match. Searching for '+str(trpNumber)+'int(row[1])=', int(row[1])
                 if trpNumber==int(row[1]):
-                    #print 'Data exists:', row
+                    print 'Data exists:', row
                     return [row[i] for i in range(len(row))]
-                else:
-                    return None
+        
+        # removing else statement and moving outside the for loop should ensure that program searches
+        # the entire database before returning not found
+        print 'Did not find in db'                    
+        return None
                     # find a nicer way to output this to the screen
                     
             
+
     # check inputs vs CSV file to see if the data has already been calculated
         # open CSV
         # check each row of csv to see if PDB already exists
@@ -268,7 +274,7 @@ def writePDB_to_ksq_db(pdbID,trpNumber):
     stringOut = (pdbID,)+(trpNumber,)+(distanceCentertoCenter(trpNumber),)
     stringOut+=kappaSquaredRoutine(trpNumber)+estimationOfKappaSquared(trpNumber)
     #writes stringOut to a single row
-    print stringOut
+    #print stringOut
     with open('k_sq_db.csv', 'a') as f:
         writer = csv.writer(f)
         writer.writerow(stringOut)
@@ -292,6 +298,7 @@ def main():
 
     from_db = readPDB_ksq_db(pdbID,trpNumber)    
     if from_db ==None:
+        print 'Writing to database'        
         written_to_db = writePDB_to_ksq_db(pdbID,trpNumber)
         print_out(written_to_db)
     else:
