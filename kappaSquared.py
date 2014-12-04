@@ -308,8 +308,11 @@ def main():
 
 main()
 
-with open('fish_coord.csv', 'a') as f:
+def write_coord_fish_plot(pdbID,trpNumber):
+    with open('fish_coord'+pdbID+'_'+trpNumber+'.csv', 'a') as f:
         writer = csv.writer(f)
-        fish_angle_N_D= generateFishPlot(7)        
+        fish_angle_N_D= generateFishPlot(trpNumber)        
         for row in fish_angle_N_D:
             writer.writerow(row)
+
+	
