@@ -153,7 +153,7 @@ def distanceCentertoCenter(trpNumber):
     getHemeCoordfromPDB()
     return numpy.linalg.norm(subtract(atomXYZ["FE"],atomXYZ["trpOrigin"]))
 
-def kappaSquaredRoutine(trpNumber):
+def kappaSquaredRoutine(trpNumber,angle_heme):
     #shorten function names just to make it a bit 'easier' to read the lines following code
     hDC= hemeDipoleCoordinates
     gHDP=generateHemeDipoleParameter
@@ -165,8 +165,8 @@ def kappaSquaredRoutine(trpNumber):
     #this is the transition vector from the trp to the heme
     Trans_V=numpy.subtract(aXYZ['FE'],aXYZ['trpOrigin'])
     #use this as a rough estimate of the heme normal and disorder dipoles
-    hemeD_Norm =numpy.subtract(hDC(fsolve(gHDP,.5,(55,"normal")),"normal"),aXYZ['FE'])
-    hemeD_Dis =numpy.subtract(hDC(fsolve(gHDP,.5,(55,"disordered")),"disordered"),aXYZ['FE'])
+    hemeD_Norm =numpy.subtract(hDC(fsolve(gHDP,.5,(angle_heme,"normal")),"normal"),aXYZ['FE'])
+    hemeD_Dis =numpy.subtract(hDC(fsolve(gHDP,.5,(angle_heme,"disordered")),"disordered"),aXYZ['FE'])
     #use this as a rough estimate of tryptophan dipole
     trpD = numpy.subtract(trpDipoleCoordinates(fsolve(generateTrpDipoleParameter,.5,38)),aXYZ['trpOrigin'])
     #calculates the normal and disordered
@@ -262,13 +262,14 @@ def readPDB_ksq_db(pdbID,trpNumber):
         return None
                     
             
-
+def generateFishPlot():
+    return None
 
 
 def writePDB_to_ksq_db(pdbID,trpNumber):
     # builds up row to be written to file (combines and flattens tuples)
     stringOut = (pdbID,)+(trpNumber,)+(distanceCentertoCenter(trpNumber),)
-    stringOut+=kappaSquaredRoutine(trpNumber)+estimationOfKappaSquared(trpNumber)
+    stringOut+=kappaSquaredRoutine(trpNumber,55)+estimationOfKappaSquared(trpNumber)
     #writes stringOut to a single row
     #print stringOut
     with open('k_sq_db.csv', 'a') as f:
