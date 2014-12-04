@@ -263,10 +263,10 @@ def readPDB_ksq_db(pdbID,trpNumber):
                     
             
 def generateFishPlot(trpNumber):
-    #this is half working, need to investigate in kappaSquaredRoutine the generated coordinates. 
-    #May cause issues for values far away from .5 for generateHemeDipoleParameter argument that is listed as 'x'
+    # Combining normal and disordered into one plot will make a successful fish plot. Change range to 0,91 from 0,181. 
+    # 
     angle_N_D_coord_fish=[]    
-    for i in range(0,181):    
+    for i in range(0,91):    
         angle_N_D_coord_fish.append(list((i,)+kappaSquaredRoutine(trpNumber,i)))
     return angle_N_D_coord_fish
 
