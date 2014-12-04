@@ -262,8 +262,13 @@ def readPDB_ksq_db(pdbID,trpNumber):
         return None
                     
             
-def generateFishPlot():
-    return None
+def generateFishPlot(trpNumber):
+    #this is half working, need to investigate in kappaSquaredRoutine the generated coordinates. 
+    #May cause issues for values far away from .5 for generateHemeDipoleParameter argument that is listed as 'x'
+    angle_N_D_coord_fish=[]    
+    for i in range(0,181):    
+        angle_N_D_coord_fish.append(list((i,)+kappaSquaredRoutine(trpNumber,i)))
+    return angle_N_D_coord_fish
 
 
 def writePDB_to_ksq_db(pdbID,trpNumber):
@@ -302,3 +307,9 @@ def main():
         print_out(from_db)
 
 main()
+
+with open('fish_coord.csv', 'a') as f:
+        writer = csv.writer(f)
+        fish_angle_N_D= generateFishPlot(7)        
+        for row in fish_angle_N_D:
+            writer.writerow(row)
