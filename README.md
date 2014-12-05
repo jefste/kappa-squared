@@ -11,16 +11,16 @@ Specifically, start reading at page 548.
 DOI: 10.1016/S0076-6879(97)78030-3
 
 Currently the program:
-*calculates the kappa squared (also known as the orientation factor) between the transition dipoles for heme and tryptophan in myoglobin.
-*calculates the kappa squared for both the normal and disordered transition dipoles:
-    *estimate: uses only the coordinates of the pdb file
-    *'exact': generates coordinates of the file for specific angles
-*calculates distance between tryptophan and heme dipole origins 
-*allows user to select which PDB to determine and which tryptophan to measure.
+-calculates the kappa squared (also known as the orientation factor) between the transition dipoles for heme and tryptophan in myoglobin.
+-calculates the kappa squared for both the normal and disordered transition dipoles:
+    --estimate: uses only the coordinates of the pdb file
+    --'exact': generates coordinates of the file for specific angles
+-calculates distance between tryptophan and heme dipole origins 
+-allows user to select which PDB to determine and which tryptophan to measure.
 	*if the file does not exist locally, program will download the PDB from the PDB db
 	*if the file does exist locally, the program checks a database file (csv file) to see if your data has already been calculated
 	*if no tryptophan is specified, the program will determine at what locations the tryptophans are stored and allow you to select one of them
-*has some error handling
+-has some error handling
 
 TO RUN THIS PROGRAM:
 The files/directories needed are 'kappa-squared.py', 'k_sq_db.csv' and a directory 'PDB' in the same directory as the .py and .csv file.
@@ -34,16 +34,19 @@ Example of other valid usage:
 $ python kappa-squared.py
 This will prompt user to input a PDB and tryptophan to use to calculate kappa squared.
 
-  
+Currently in development:  
+-generates fish plot for each pdb
+--This is nearly done, just unsure if there is a better way that this can be saved. Also may have slight issue for points near 0.
+-use mplot3d/matplotlib to draw the tryptophan and heme structures, draw the transition dipoles for each as well as the transition vector
+--Half done, can plot some coordinates, would be nicer to be able to draw the heme structure as well as the trp stucture to easier visualize. Not sure how useful this is, but might be a useful 'sight test' for some cases.
+-create relation database (SQL?) that contains trp-heme kappa squared for all heme proteins that stores the image for each
+--currently have a CSV that stores data. No image storage.
 
 Future things to implement:
-*error handling:
-	*handle invalid pdb name
-	*handle invalid pdb file (abort if no trp or heme are found)
-		*currently aborts script if there are no trps found
-*generate fish plot for each pdb
-*use mplot3d/matplotlib to draw the tryptophan and heme structures, draw the transition dipoles for each as well as the transition vector
-*read from large MD file to map distance and kappa squared over time (need old MD files for this)
-*determine if hemes are normal or disordered depending on structure?
-*create relation database (SQL?) that contains trp-heme kappa squared for all heme proteins that stores the image for each
-	*compare with other literature (FRET book?)
+-better error handling:
+	--handle invalid pdb name
+	--handle invalid pdb file (abort if no trp or heme are found)
+		--currently aborts script if there are no trps found
+-read from large MD file to map distance and kappa squared over time (need old MD files for this)
+-determine if hemes are normal or disordered depending on structure?
+-compare ksq values with other literature (FRET book?)
