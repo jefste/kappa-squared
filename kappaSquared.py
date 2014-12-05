@@ -291,6 +291,13 @@ def print_out(stringData):
     print 'normal: %.3f \t disordered: %.3f' % (float(stringData[5]),float(stringData[6]))
 
 
+def write_coord_fish_plot(pdbID,trpNumber):
+    with open('fish_coord'+pdbID+'_'+trpNumber+'.csv', 'a') as f:
+        writer = csv.writer(f)
+        fish_angle_N_D= generateFishPlot(trpNumber)        
+        for row in fish_angle_N_D:
+            writer.writerow(row)
+
 def main():
     #checks to see if PDB is local or needs downloading, then parses data from file for reading in program.
     pdbID=grabPDB()
@@ -306,13 +313,6 @@ def main():
     else:
         print_out(from_db)
 
-main()
-
-def write_coord_fish_plot(pdbID,trpNumber):
-    with open('fish_coord'+pdbID+'_'+trpNumber+'.csv', 'a') as f:
-        writer = csv.writer(f)
-        fish_angle_N_D= generateFishPlot(trpNumber)        
-        for row in fish_angle_N_D:
-            writer.writerow(row)
 
 	
+main()
