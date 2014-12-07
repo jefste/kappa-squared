@@ -64,6 +64,41 @@ def grabPDB():
                 print "Did the PDB download and save (does file exist)?",os.path.isfile(pathnamePDB)
                 return pdbID.upper()
 
+
+def findTrp():
+    trpAtNumber=[]
+    for row in data: 
+        if row[0]=='ATOM':
+            if row[3]=='TRP' and int(row[5]) not in trpAtNumber:
+                trpAtNumber.append(int(row[5]))
+    if len(trpAtNumber)==0:
+        sys.exit('No tryptophan found for PDB specified. Aborting script.')
+    return trpAtNumber
+                
+def promptForTrp(trpsAtlocations):
+    while True:
+        trpNumber = int(raw_input('Found tryptophan at locations: '+str(trpsAtlocations).strip('[]')+'\nWhich tryptophan to use for calcuations? '))
+        if trpNumber not in trpsAtlocations:
+            print 'No tryptophan at location ', trpNumber
+        else:
+            return trpNumber
+
+def whichTrpToMeasure():
+    trpsAtlocations=findTrp()
+    if len(sys.argv)>2:
+        #reads the second argument after the .py file
+        #example: python kappa-squared.py 1MBD 14
+        #this reads the 14 for the tryptophan number 
+        if int(sys.argv[2]) in trpsAtlocations:
+             return int(sys.argv[2])
+        else:
+            print 'No tryptophan at location', int(sys.argv[2])
+            return promptForTrp(trpsAtlocations)
+    else:
+        print 'No tryptophan specified'
+        return  promptForTrp(trpsAtlocations)
+
+
 #I think this gets rid of all spaces in "data" variable?
 # maybe it generates 2D array?
 def readFromDatafile(pdbFileName):
@@ -202,40 +237,6 @@ def kappaSquaredRoutine(trpNumber,angle_heme):
     return normKap,disorderedKap
 
 
-def findTrp():
-    trpAtNumber=[]
-    for row in data: 
-        if row[0]=='ATOM':
-            if row[3]=='TRP' and int(row[5]) not in trpAtNumber:
-                trpAtNumber.append(int(row[5]))
-    if len(trpAtNumber)==0:
-        sys.exit('No tryptophan found for PDB specified. Aborting script.')
-    return trpAtNumber
-                
-def promptForTrp(trpsAtlocations):
-    while True:
-        trpNumber = int(raw_input('Found tryptophan at locations: '+str(trpsAtlocations).strip('[]')+'\nWhich tryptophan to use for calcuations? '))
-        if trpNumber not in trpsAtlocations:
-            print 'No tryptophan at location ', trpNumber
-        else:
-            return trpNumber
-
-def whichTrpToMeasure():
-    trpsAtlocations=findTrp()
-    if len(sys.argv)>2:
-        #reads the second argument after the .py file
-        #example: python kappa-squared.py 1MBD 14
-        #this reads the 14 for the tryptophan number 
-        if int(sys.argv[2]) in trpsAtlocations:
-             return int(sys.argv[2])
-        else:
-            print 'No tryptophan at location', int(sys.argv[2])
-            return promptForTrp(trpsAtlocations)
-    else:
-        print 'No tryptophan specified'
-        return  promptForTrp(trpsAtlocations)
-
-
 def readPDB_ksq_db(pdbID,trpNumber):
     #with command opens and closes file, was 'rb' for open command, changed to 'rU'
     #because of error message 'new-line character seen in unquoted field'
@@ -245,7 +246,7 @@ def readPDB_ksq_db(pdbID,trpNumber):
             #for debugging
             #print 'row[0]:',row[0]
             if pdbID==str(row[0]):
-                print 'found PDB match. Searching for '+str(trpNumber)+'int(row[1])=', int(row[1])
+                print 'found PDB match.'
                 if trpNumber==int(row[1]):
                     # for debugging, don't need to print row here                    
                     #print 'Data exists:', row
