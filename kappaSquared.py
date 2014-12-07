@@ -1,6 +1,6 @@
 '''
-Calculates the kappa squared of the the local file 1MBD
-imports the coordinates from the PDB file
+Calculates the kappa squared (also known as the orientation factor) of a PDB file. 
+imports the coordinates from the PDB file in the directory PDB or downloads from the PDB
 
 calculates the kappa squared for both the normal and disordered transition dipoles 
     estimate: uses only the coordinates of the PDB file
@@ -22,13 +22,6 @@ from scipy import *
 from numpy import *
 from scipy.optimize import fsolve
 
-
-#reads the first argument after the .py file
-#example: python kappa-squared.py 1MBD 14
-#this reads the PDB 1MBD in the subfolder PDB
-#pdbFileName = sys.argv[1]
-
-
 data = []
 
 # create a blank dictionary to write to and read from for XYZ coordinates
@@ -36,6 +29,40 @@ atomXYZ={}
 #lists of tryptophan and heme coordinates to write into atomXYZ dictionary
 trpList=['CD1','CD2','CE2','NE1']
 hemeList=['FE','CHC','CHD','C3C','C2B']
+
+
+
+def grabPDB():
+    while True:
+        #prompts user for input of PDB structure. PDB is not case sensitive
+        # checks to see if an value was given for the argument
+        if len(sys.argv)>1:
+            # reads 1st argument after k-s.py and converts to uppercase
+            pdbID = sys.argv[1].upper()
+        else:
+            # prompts user for input
+            pdbID = str(raw_input("enter the PDB Structure: ")).upper()
+        
+        url = "http://www.rcsb.org/pdb/download/downloadFile.do?fileFormat=pdb&compression=NO&structureId="+pdbID
+        pathnamePDB="PDB/"+pdbID+".pdb"
+        #checks to see if the path and the file name exists. Is this redunant? Maybe only need to check for file exisiting?
+        #Note that when checking exists or isfile, the function does not appear to be case dependant
+        if os.path.exists(pathnamePDB) and os.path.isfile(pathnamePDB):
+            print  "reading PDB file locally"
+            return pdbID.upper()
+        else:
+            #checks to see if PDB exists
+            if requests.get(url).status_code!=200:
+                print "PDB structure name: "+ pdbID +" not found"    
+                # the program gets stuck in this loop if the PDB is not found, need to address this issue
+                # pdbID = str(raw_input("enter another PDB Structure: ")).upper()
+                # url = "http://www.rcsb.org/pdb/download/downloadFile.do?fileFormat=pdb&compression=NO&structureId="+pdbID
+                # pathnamePDB="PDB/"+pdbID+".pdb"
+            else:
+                print "pdb found"
+                urllib.urlretrieve (url, pathnamePDB)
+                print "Did the PDB download and save (does file exist)?",os.path.isfile(pathnamePDB)
+                return pdbID.upper()
 
 #I think this gets rid of all spaces in "data" variable?
 # maybe it generates 2D array?
@@ -174,38 +201,6 @@ def kappaSquaredRoutine(trpNumber,angle_heme):
     disorderedKap=kappaSquared(dPA(trpD,hemeD_Dis),dPA(trpD,Trans_V),dPA(hemeD_Dis,Trans_V))
     return normKap,disorderedKap
 
-
-def grabPDB():
-    while True:
-        #prompts user for input of PDB structure. PDB is not case sensitive
-        # checks to see if an value was given for the argument
-        if len(sys.argv)>1:
-            # reads 1st argument after k-s.py and converts to uppercase
-            pdbID = sys.argv[1].upper()
-        else:
-            # prompts user for input
-            pdbID = str(raw_input("enter the PDB Structure: ")).upper()
-        
-        url = "http://www.rcsb.org/pdb/download/downloadFile.do?fileFormat=pdb&compression=NO&structureId="+pdbID
-        pathnamePDB="PDB/"+pdbID+".pdb"
-        #checks to see if the path and the file name exists. Is this redunant? Maybe only need to check for file exisiting?
-        #Note that when checking exists or isfile, the function does not appear to be case dependant
-        if os.path.exists(pathnamePDB) and os.path.isfile(pathnamePDB):
-            print  "reading PDB file locally"
-            return pdbID.upper()
-        else:
-            #checks to see if PDB exists
-            if requests.get(url).status_code!=200:
-                print "PDB structure name: "+ pdbID +" not found"    
-                # the program gets stuck in this loop if the PDB is not found, need to address this issue
-                # pdbID = str(raw_input("enter another PDB Structure: ")).upper()
-                # url = "http://www.rcsb.org/pdb/download/downloadFile.do?fileFormat=pdb&compression=NO&structureId="+pdbID
-                # pathnamePDB="PDB/"+pdbID+".pdb"
-            else:
-                print "pdb found"
-                urllib.urlretrieve (url, pathnamePDB)
-                print "Did the PDB download and save (does file exist)?",os.path.isfile(pathnamePDB)
-                return pdbID.upper()
 
 def findTrp():
     trpAtNumber=[]
