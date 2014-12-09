@@ -288,11 +288,20 @@ def print_out(stringData):
 
 
 def write_coord_fish_plot(pdbID,trpNumber):
-    with open('fish_coord'+pdbID+'_'+trpNumber+'.csv', 'a') as f:
+    with open('fishplots/fish_coord'+'_'+str(pdbID)+'_'+str(trpNumber)+'.csv', 'w') as f:
         writer = csv.writer(f)
         fish_angle_N_D= generateFishPlot(trpNumber)        
         for row in fish_angle_N_D:
             writer.writerow(row)
+
+
+def find_fish_plot(pdbID,trpNumber):
+    pathnameFishPlot= 'fishplot/fish_coord'+'_'+str(pdbID)+'_'+str(trpNumber)+'.csv'  
+    if os.path.exists(pathnameFishPlot) and os.path.isfile(pathnameFishPlot):
+        print 'fish plot coordinates exist'
+	return False
+    else:
+        return True
 
 def main():
     #checks to see if PDB is local or needs downloading, then parses data from file for reading in program.
@@ -308,6 +317,10 @@ def main():
         print_out(written_to_db)
     else:
         print_out(from_db)
+    
+    if find_fish_plot(pdbID,trpNumber):
+        write_coord_fish_plot(pdbID,trpNumber)
+
 
 
 	
