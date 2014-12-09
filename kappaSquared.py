@@ -18,6 +18,9 @@ import requests
 import os
 import string
 
+import re
+
+
 from scipy import *
 from numpy import *
 from scipy.optimize import fsolve
@@ -37,8 +40,12 @@ def grabPDB():
         #prompts user for input of PDB structure. PDB is not case sensitive
         # checks to see if an value was given for the argument
         if len(sys.argv)>1:
-            # reads 1st argument after k-s.py and converts to uppercase
-            pdbID = sys.argv[1].upper()
+            if os.path.isdir(sys.argv[1]):
+                #if directory exists, read all files from the directory
+                return  os.listdir(sys.argv[1])
+            else:
+                # reads 1st argument after k-s.py and converts to uppercase
+                pdbID = sys.argv[1].upper()
         else:
             # prompts user for input
             pdbID = str(raw_input("enter the PDB Structure: ")).upper()
@@ -303,23 +310,31 @@ def find_fish_plot(pdbID,trpNumber):
     else:
         return True
 
+
 def main():
     #checks to see if PDB is local or needs downloading, then parses data from file for reading in program.
-    pdbID=grabPDB()
-    readFromDatafile(pdbID)
+    pdbIDlist=grabPDB()
+    #if type(pdbID) is list:
+    # go through each file running the main routine
 
-    trpNumber=whichTrpToMeasure()
+    for pdbID in pdbIDlist:
+# gets rid of .pdb 
+        pdbID = re.sub('.pdb','',pdbID)
 
-    from_db = readPDB_ksq_db(pdbID,trpNumber)    
-    if from_db ==None:
-        print 'Writing to database'        
-        written_to_db = writePDB_to_ksq_db(pdbID,trpNumber)
-        print_out(written_to_db)
-    else:
-        print_out(from_db)
-    
-    if find_fish_plot(pdbID,trpNumber):
-        write_coord_fish_plot(pdbID,trpNumber)
+        readFromDatafile(pdbID)
+
+        trpNumber=whichTrpToMeasure()
+
+        from_db = readPDB_ksq_db(pdbID,trpNumber)    
+        if from_db ==None:
+            print 'Writing to database'        
+            written_to_db = writePDB_to_ksq_db(pdbID,trpNumber)
+            print_out(written_to_db)
+        else:
+            print_out(from_db) 
+        
+        if find_fish_plot(pdbID,trpNumber):
+            write_coord_fish_plot(pdbID,trpNumber)
 
 
 
