@@ -40,7 +40,7 @@ Currently in development:
 -use mplot3d/matplotlib to draw the tryptophan and heme structures, draw the transition dipoles for each as well as the transition vector
 --Half done, can plot some coordinates, would be nicer to be able to draw the heme structure as well as the trp stucture to easier visualize. Not sure how useful this is, but might be a useful 'sight test' for some cases.
 -create relation database (SQL?) that contains trp-heme kappa squared for all heme proteins that stores the image for each
---currently have a CSV that stores data. No image storage.
+--currently have a CSV that stores data. No image storage. Seems to work for 1MBD, but some issue with 1JP6. Looks like a problem with arccos invalid argument. maybe blowing up?
 
 Future things to implement:
 -better error handling:
