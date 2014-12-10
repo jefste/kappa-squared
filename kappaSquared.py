@@ -329,18 +329,20 @@ def main():
 
         readFromDatafile(pdbID)
 
-        trpNumber=whichTrpToMeasure()
+        listoftrps=whichTrpToMeasure()
 
-        from_db = readPDB_ksq_db(pdbID,trpNumber)    
-        if from_db ==None:
-            print 'Writing to database'        
-            written_to_db = writePDB_to_ksq_db(pdbID,trpNumber)
-            print_out(written_to_db)
-        else:
-            print_out(from_db) 
+        for trpNumber in listoftrps:
+            
+            from_db = readPDB_ksq_db(pdbID,trpNumber)    
+            if from_db ==None:
+                print 'Writing to database'        
+                written_to_db = writePDB_to_ksq_db(pdbID,trpNumber)
+                print_out(written_to_db)
+            else:
+                print_out(from_db) 
         
-        if find_fish_plot(pdbID,trpNumber):
-            write_coord_fish_plot(pdbID,trpNumber)
+            if find_fish_plot(pdbID,trpNumber):
+                write_coord_fish_plot(pdbID,trpNumber)
 
 
 
