@@ -41,7 +41,7 @@ def grabPDB():
         # checks to see if an value was given for the argument
         if len(sys.argv)>1:
             if os.path.isdir(sys.argv[1]):
-                #if directory exists, read all files from the directory
+                #if directory exists, return all files from the directory
                 return  os.listdir(sys.argv[1])
             else:
                 # reads 1st argument after k-s.py and converts to uppercase
@@ -56,7 +56,7 @@ def grabPDB():
         #Note that when checking exists or isfile, the function does not appear to be case dependant
         if os.path.exists(pathnamePDB) and os.path.isfile(pathnamePDB):
             print  "reading PDB file locally"
-            return pdbID.upper()
+            return [pdbID.upper()]
         else:
             #checks to see if PDB exists
             if requests.get(url).status_code!=200:
@@ -69,7 +69,7 @@ def grabPDB():
                 print "pdb found"
                 urllib.urlretrieve (url, pathnamePDB)
                 print "Did the PDB download and save (does file exist)?",os.path.isfile(pathnamePDB)
-                return pdbID.upper()
+                return [pdbID.upper()]
 
 
 def findTrp():
@@ -109,6 +109,13 @@ def whichTrpToMeasure():
 #I think this gets rid of all spaces in "data" variable?
 # maybe it generates 2D array?
 def readFromDatafile(pdbFileName):
+
+    if os.path.isdir(sys.argv[1]):
+        directory=sys.argv[1]
+    else:
+        directory = 'PDB'
+
+
     datafile = open('PDB/'+pdbFileName+'.pdb', 'r')
     for row in datafile:
         data.append(row.strip().split())
@@ -314,9 +321,8 @@ def find_fish_plot(pdbID,trpNumber):
 def main():
     #checks to see if PDB is local or needs downloading, then parses data from file for reading in program.
     pdbIDlist=grabPDB()
-    #if type(pdbID) is list:
-    # go through each file running the main routine
 
+    #need to distinguish between a list and just ONE string of characters!!!!
     for pdbID in pdbIDlist:
 # gets rid of .pdb 
         pdbID = re.sub('.pdb','',pdbID)
