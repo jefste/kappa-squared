@@ -16,10 +16,13 @@ Currently the program:
     --estimate: uses only the coordinates of the pdb file
     --'exact': generates coordinates of the file for specific angles
 -calculates distance between tryptophan and heme dipole origins 
+-generates the coordinates for a fish plot and puts the results in a folder called fishplots for each tryptophan heme pair. (still some bugs here)
 -allows user to select which PDB to determine and which tryptophan to measure.
 	*if the file does not exist locally, program will download the PDB from the PDB db
 	*if the file does exist locally, the program checks a database file (csv file) to see if your data has already been calculated
-	*if no tryptophan is specified, the program will determine at what locations the tryptophans are stored and allow you to select one of them
+	*if no tryptophan is specified, the program measure for all tryptophan positions.
+-if a directory is specified instead of a single PDB file, the program calculates for the kappa squared for all files in the directory. 
+    --warning on this command
 -has some error handling
 
 TO RUN THIS PROGRAM:
@@ -29,10 +32,13 @@ $ python kappa-squared.py 1MBD 7
 This will calculate kappa squared for the pdb file 1MBD for tryptophan 7.
 Example of other valid usage:
 $ python kappa-squared.py 1MBD 
-This will prompt user to input which tryptophan to use to calculate kappa squared.
+This measure the kappa squared for all trp positions (7 and 14 in this case).
 Example of other valid usage:
 $ python kappa-squared.py
-This will prompt user to input a PDB and tryptophan to use to calculate kappa squared.
+This will prompt user to input a PDB to use to calculate kappa squared.
+Example of directory usage:
+$ python kappa-squared.py MyPDBdirectory
+This goes to the directory MyPDBdirectory and automatically calculates all of the kappa squared for every file in the directory.
 
 Currently in development:  
 -generates fish plot for each pdb
