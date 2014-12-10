@@ -116,7 +116,7 @@ def readFromDatafile(pdbFileName):
         directory = 'PDB'
 
 
-    datafile = open('PDB/'+pdbFileName+'.pdb', 'r')
+    datafile = open(directory+'/'+pdbFileName+'.pdb', 'r')
     for row in datafile:
         data.append(row.strip().split())
 
