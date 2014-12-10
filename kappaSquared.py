@@ -97,13 +97,13 @@ def whichTrpToMeasure():
         #example: python kappa-squared.py 1MBD 14
         #this reads the 14 for the tryptophan number 
         if int(sys.argv[2]) in trpsAtlocations:
-             return int(sys.argv[2])
+             return [int(sys.argv[2])]
         else:
             print 'No tryptophan at location', int(sys.argv[2])
-            return promptForTrp(trpsAtlocations)
+            return [promptForTrp(trpsAtlocations)]
     else:
-        print 'No tryptophan specified'
-        return  promptForTrp(trpsAtlocations)
+        print 'No tryptophan specified. Using locations: '+str(trpsAtlocations).strip('[]')
+        return  trpsAtlocations
 
 
 #I think this gets rid of all spaces in "data" variable?
