@@ -66,7 +66,7 @@ def grabPDB():
                 # url = "http://www.rcsb.org/pdb/download/downloadFile.do?fileFormat=pdb&compression=NO&structureId="+pdbID
                 # pathnamePDB="PDB/"+pdbID+".pdb"
             else:
-                print "pdb found"
+                print "pdb found remotely on Research Collaboratory for Structural Bioinformatics (RCSB)"
                 urllib.urlretrieve (url, pathnamePDB)
                 print "Did the PDB download and save (does file exist)?",os.path.isfile(pathnamePDB)
                 return [pdbID.upper()]
@@ -332,7 +332,6 @@ def main():
         listoftrps=whichTrpToMeasure()
 
         for trpNumber in listoftrps:
-            
             from_db = readPDB_ksq_db(pdbID,trpNumber)    
             if from_db ==None:
                 print 'Writing to database'        
