@@ -326,7 +326,7 @@ def main():
     for pdbID in pdbIDlist:
 # gets rid of .pdb 
         pdbID = re.sub('.pdb','',pdbID)
-
+        print 'this pdb ',pdbID
         readFromDatafile(pdbID)
 
         listoftrps=whichTrpToMeasure()
@@ -339,7 +339,7 @@ def main():
                 print_out(written_to_db)
             else:
                 print_out(from_db) 
-        
+            
             if find_fish_plot(pdbID,trpNumber):
                 write_coord_fish_plot(pdbID,trpNumber)
 
