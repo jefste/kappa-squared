@@ -4,6 +4,7 @@ This python script computes the orientation factor or ''kappa squared'' (k^2) be
 Forster Resonance Energy Transfer (FRET). A PDB file is read and the user inputs the number of 
 tryptopahn that the orientation factor between the tryptophan and the heme. The orientation factor 
 is calculated with 2 different methods, for both the normal and disordered orientations of hemes. 
+It is also capable of creating "fish plots" for trp-heme pairs.
 For further information, read: 
 "Intrinsic fluorescence of hemoglobins and myoglobins." 
 Gryczynski, Z.; Lubkowski, J.; Bucci, E. Methods Enzymol. 1997, 278, 538–569. 
