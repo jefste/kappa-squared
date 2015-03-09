@@ -106,12 +106,12 @@ def whichTrpToMeasure():
         return  trpsAtlocations
 
 
-#I think this gets rid of all spaces in "data" variable?
-# maybe it generates 2D array?
 def readFromDatafile(pdbFileName):
-
-    if os.path.isdir(sys.argv[1]):
-        directory=sys.argv[1]
+    # check to see that at least a file was specified 
+    if len(sys.argv)>1:
+        #if the 2nd argument specified is a directory, use that directory
+        if os.path.isdir(sys.argv[1]):
+            directory=sys.argv[1]
     else:
         directory = 'PDB'
 
@@ -321,10 +321,9 @@ def find_fish_plot(pdbID,trpNumber):
 def main():
     #checks to see if PDB is local or needs downloading, then parses data from file for reading in program.
     pdbIDlist=grabPDB()
-
     #need to distinguish between a list and just ONE string of characters!!!!
     for pdbID in pdbIDlist:
-# gets rid of .pdb 
+        # gets rid of .pdb 
         pdbID = re.sub('.pdb','',pdbID)
         print 'this pdb ',pdbID
         readFromDatafile(pdbID)
