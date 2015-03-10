@@ -167,6 +167,7 @@ def kappaSquared(angle_DA,angle_DT,angle_AT):
 def dotProductAngle(vector1,vector2):
     numerator1=numpy.dot(vector1,vector2)
     denominator1=numpy.power(numpy.dot(vector1,vector1)*numpy.dot(vector2,vector2),0.5)
+    #print 'the numerator is',numerator1,'the denominator is',denominator1,'arccos(n/d) is', numpy.arccos(numerator1/denominator1)
     return numpy.arccos(numerator1/denominator1)
 
 
@@ -278,7 +279,11 @@ def generateFishPlot(trpNumber):
     # Combining normal and disordered into one plot will make a successful fish plot. Change range to 0,91 from 0,181. 
     # 
     angle_N_D_coord_fish=[]    
-    for i in range(0,91):    
+    for i in range(0,91):
+        #put this in for case of angle 0, as getting runtime error for some cases was giving warning
+        if i==0:
+            #use angle of .1, could possibly tweak this in the future?
+            i=.1        
         angle_N_D_coord_fish.append(list((i,)+kappaSquaredRoutine(trpNumber,i)))
     return angle_N_D_coord_fish
 
