@@ -107,13 +107,15 @@ def whichTrpToMeasure():
 
 
 def readFromDatafile(pdbFileName):
-    # check to see that at least a file was specified 
+    #initialize directory to PDB
+    directory = 'PDB'
+
+    # check if more than 1 argument is specified,
     if len(sys.argv)>1:
         #if the 2nd argument specified is a directory, use that directory
+        #otherwise the directory remains PDB
         if os.path.isdir(sys.argv[1]):
             directory=sys.argv[1]
-    else:
-        directory = 'PDB'
 
 
     datafile = open(directory+'/'+pdbFileName+'.pdb', 'r')
